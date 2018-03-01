@@ -30,7 +30,7 @@ const admLinks =  [
 	}
 ]
 
-class AdminPage extends Component {
+class Admin extends Component {
 	getTitle() {
 		let path = this.props.history.location.pathname
 		if (~path.indexOf("home")) {
@@ -142,5 +142,5 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPage)
+export default connect(mapStateToProps, mapDispatchToProps)(Admin)
 

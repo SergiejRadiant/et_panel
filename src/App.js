@@ -1,17 +1,21 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React, { Component } from 'react'
+import { Provider } from 'react-redux'
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
 
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import { routeActions, syncHistoryWithStore } from 'react-router-redux';
+import PrivateRoute from './containers/PrivateRoute'
+import Login from './containers/Login'
+import Admin from './containers/Admin'
+import Driver from './containers/Driver'
 
-import LoginPage from './containers/LoginPage';
-import AdminPage from './containers/AdminPage';
-import DriverPage from './containers/DriverPage';
+import './assets/styles/app.css'
 
-import './assets/styles/app.css';
+import getHistory from './store/history'
+import configureStore from './store/index'
 
-import store from './store/index';
+const  store = configureStore(getHistory())
+
 window.store = store
+
 
 export default class App extends Component {
 	render() {
@@ -19,9 +23,10 @@ export default class App extends Component {
 			<Provider key={module.hot ? Date.now() : store} store={store}>
 				<BrowserRouter>
 					<Switch>
-						<Route path="/login" component={LoginPage} />
-						<Route path="/admin" component={AdminPage} />
-						<Route path="/:driverId" component={DriverPage} />
+						<Route path="/login" component={Login} />
+						<PrivateRoute path="/admin" component={Admin} />
+						<PrivateRoute path="/:driverId" component={Driver} />
+						<Redirect to="/login" />
 					</Switch>
 				</BrowserRouter>
 			</Provider>

@@ -23,7 +23,7 @@ const drvLinks = [
 	}
 ]
 
-export default class DriverPage extends Component {
+export default class Driver extends Component {
 	getTitle() {
 		let path = this.props.history.location.pathname
 		if (~path.indexOf("home")) {
