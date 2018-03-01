@@ -17,7 +17,8 @@ import logo from '../assets/images/logo.svg'
 import burgerIcon from '../assets/images/burger-icon.svg'
 import exitBtn from '../assets/images/exit.svg'
 
-import { newDriver } from '../actions/index'
+import { echo } from '../actions/echo'
+import { serverMessage } from '../reducers/echo'
 
 const admLinks =  [
 	{
@@ -31,6 +32,10 @@ const admLinks =  [
 ]
 
 class Admin extends Component {
+	componentDidMount() {
+		this.props.fetchMessage('Hi!')
+	}
+	
 	getTitle() {
 		let path = this.props.history.location.pathname
 		if (~path.indexOf("home")) {
@@ -55,7 +60,7 @@ class Admin extends Component {
 	}
 
 	render() {
-		console.log(this.props)
+		console.log(this.props.message)
 		return (
 			<div className="page app-page">
 				<Menu customBurgerIcon={false} >
@@ -132,13 +137,12 @@ class Admin extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		drivers: state.driversReducer,
-		orders: state.adminOrdersReducer
+		message: serverMessage(state)
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		newDriver: bindActionCreators(newDriver, dispatch),
+		fetchMessage: bindActionCreators(echo, dispatch)
 	}
 }
 

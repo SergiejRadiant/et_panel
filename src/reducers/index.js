@@ -5,6 +5,7 @@ import driversReducer from './driversReducer'
 import adminOrdersReducer from './adminOrdersReducer'
 import driverOrdersReducer from './driverOrdersReducer'
 import auth, * as fromAuth from './auth.js'
+import echo from './echo.js'
 
 
 const rootReducer = combineReducers({
@@ -14,7 +15,9 @@ const rootReducer = combineReducers({
     driversReducer,
     adminOrdersReducer,
     driverOrdersReducer,
+    echo,
 })
+
 
 export const isAuthenticated =
     state => fromAuth.isAuthenticated(state.auth)
@@ -28,5 +31,14 @@ export const isRefreshTokenExpired =
     state => fromAuth.isRefreshTokenExpired(state.auth)
 export const authErrors =
     state => fromAuth.errors(state.auth)
+
+
+export function withAuth(headers = {}) {
+    return (state) => ({
+        ...headers,
+        'Authorization': `JWT ${accessToken(state)}`
+    })
+}
+
 
 export default rootReducer
