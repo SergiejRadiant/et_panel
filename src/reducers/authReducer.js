@@ -1,6 +1,4 @@
-import jwtDecode from 'jwt-decode'
 import * as auth from '../actions/auth'
-
 
 const initialState = {
   access: undefined,
@@ -61,19 +59,18 @@ export function isAccessTokenExpired(state) {
   return true
 }
 export function isRefreshTokenExpired(state) {
-  if (state.refresh && state.refresh.exp) {
-    return 1000 * state.refresh.exp - (new Date()).getTime() < 5000
-  }
-  return true
-}
-export function isAuthenticated(state) {
+  // if (state.refresh && state.refresh.exp) {
+  //   return 1000 * state.refresh.exp - (new Date()).getTime() < 5000
+  // }
   
-  if( state.access && state.access.token !== "" ) {
+  if (state.access && state.access.token !== "") {
     return { isAdmin: state.access.isAdmin, isAuthenticated: true }
   }
-    
+
   return { isAuthenticated: false }
-  // return !isRefreshTokenExpired(state)
+}
+export function isAuthenticated(state) {
+  return isRefreshTokenExpired(state)
 }
 export function errors(state) {
   return state.errors

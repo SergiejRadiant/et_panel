@@ -4,18 +4,16 @@ import { reducer as burgerMenu } from 'redux-burger-menu'
 import driversReducer from './driversReducer'
 import adminOrdersReducer from './adminOrdersReducer'
 import driverOrdersReducer from './driverOrdersReducer'
-import auth, * as fromAuth from './auth.js'
-import echo from './echo.js'
+import authReducer, * as fromAuth from './authReducer.js'
 
 
 const rootReducer = combineReducers({
-    auth: auth,
+    auth: authReducer,
     router: routerReducer,
     burgerMenu,
     driversReducer,
     adminOrdersReducer,
     driverOrdersReducer,
-    echo,
 })
 
 

@@ -17,8 +17,8 @@ import logo from '../assets/images/logo.svg'
 import burgerIcon from '../assets/images/burger-icon.svg'
 import exitBtn from '../assets/images/exit.svg'
 
-import { echo } from '../actions/echo'
-import { serverMessage } from '../reducers/echo'
+import { retrieveDrivers, registerDriver } from '../actions/drivers'
+
 
 const admLinks =  [
 	{
@@ -32,9 +32,12 @@ const admLinks =  [
 ]
 
 class Admin extends Component {
-	componentDidMount() {
-		this.props.fetchMessage('Hi!')
+	constructor(props) {
+		super(props)
+
+		this.props.retrieveDrivers()
 	}
+
 	
 	getTitle() {
 		let path = this.props.history.location.pathname
@@ -60,7 +63,7 @@ class Admin extends Component {
 	}
 
 	render() {
-		console.log(this.props.message)
+		console.log(this.props)
 		return (
 			<div className="page app-page">
 				<Menu customBurgerIcon={false} >
@@ -104,7 +107,7 @@ class Admin extends Component {
 
 							<Route path="/admin/drivers" render={ props => <Drivers {...props} drivers={this.props.drivers} /> } />
 					
-							<Route path="/admin/reg_drv" render={ props => <DriverForm {...props} newDriver={this.props.newDriver} /> } />
+							<Route path="/admin/reg_drv" render={ props => <DriverForm {...props} registerDriver={this.props.registerDriver} /> } />
 					
 							<Route path="/admin/det_drv:driverId" render={ props => <DriverForm {...props} drivers={this.props.drivers} /> } />
 
@@ -137,12 +140,13 @@ class Admin extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		message: serverMessage(state)
+		drivers: state.driversReducer.drivers
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchMessage: bindActionCreators(echo, dispatch)
+		retrieveDrivers: bindActionCreators(retrieveDrivers, dispatch),
+		registerDriver: bindActionCreators(registerDriver, dispatch),
 	}
 }
 

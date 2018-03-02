@@ -87,7 +87,7 @@ export default class Drivers extends Component {
   }
 
   isOnline(d) {
-    return d.user.is_authenticated ? <div style={{ color: "#68f2dd" }}>online</div> : d.user.last_vizit ? `заходил ${d.user.last_vizit}` : ""
+    return d.user.is_authenticated ? <div style={{ color: "#68f2dd" }}>online</div> : d.user.last_login ? `last visit ${d.user.last_login}` : ""
   }
 
   openDeleteDriverModal() {
@@ -158,13 +158,13 @@ export default class Drivers extends Component {
             <tbody>
               {this.props.drivers.map( d => {
                 return (
-                  <tr key={d.user.username}>
+                  <tr key={d.id}>
                     <td>{`${d.user.first_name} ${d.user.last_name}`}</td>
-                    <td>{`${d.car}, ${d.car_number}`}</td>
+                    <td>{`${d.car}, ${d.number_of_car}`}</td>
                     <td>{this.isOnline(d)}</td>
                     <td>
-                      <Link to={`/admin/det_drv:${d.user.username}`}>Дет.</Link>
-                      <Link to={`/admin/edit_drv:${d.user.username}`}>Ред.</Link>
+                      <Link to={`/admin/det_drv:${d.id}`}>Дет.</Link>
+                      <Link to={`/admin/edit_drv:${d.id}`}>Ред.</Link>
                       <span onClick={() => this.openDeleteDriverModal()}>Удал.</span>
                     </td>
                   </tr>

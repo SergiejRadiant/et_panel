@@ -1,75 +1,41 @@
-const driversState = [
-  {
-    "user": {
-      "first_name": "Devonte",
-      "last_name": "Connelly",
-      "username": "Ari24",
-      "password": "Ari24",
-      "is_authenticated": true,
-      "last_vizit": "26.02.18"
-    },
-    "car": "sdf",
-    "car_number": "sdf"
-  },
-  {
-    "user": {
-      "first_name": "Dorris",
-      "last_name": "Weber",
-      "username": "Vivienne.Goyette53",
-      "password": "Vivienne.Goyette53",
-      "is_authenticated": true,
-      "last_vizit": "26.02.18"
-    },
-    "car": "sdf",
-    "car_number": "sdf"
-  },
-  {
-    "user": {
-      "first_name": "Reese",
-      "last_name": "Larson",
-      "username": "Leta.Ryan",
-      "password": "Leta.Ryan",
-      "is_authenticated": false,
-      "last_vizit": "26.02.18"
-    },
-    "car": "sdf",
-    "car_number": "sdf"
-  },
-  {
-    "user": {
-      "first_name": "Jena",
-      "last_name": "Gerhold",
-      "username": "Billie.Kuhn",
-      "password": "Billie.Kuhn",
-      "is_authenticated": true,
-      "last_vizit": "26.02.18"
-    },
-    "car": "sdf",
-    "car_number": "sdf"
-  },
-]
+import * as drivers from '../actions/drivers'
 
-const driversReducer = (state = driversState, action) => {
-  switch (action.type) {
-    case 'NEW_DRIVER':
-      return state.concat({
-        "user": {
-          "first_name": action.firstName,
-          "last_name": action.lastName,
-          "username": action.username,
-          "password": action.password,
-          "is_authenticated": false,
-          "last_vizit": ""
-        },
-        "car": action.car,
-        "car_number": action.carNumber
-      })
-    
-    default:
-      return state
-  } 
-
-  return state
+const initialState = {
+  drivers: {},
+  errors: {}
 }
 
-export default driversReducer
+export default (state = initialState, action) => {
+  switch (action.type) {
+    case drivers.RETRIEVE_DRIVERS_SUCCESS:
+      return {
+        drivers: action.payload,
+        errors: {}
+      }
+    case drivers.RETRIEVE_DRIVERS_REQUEST:
+      return {
+        drivers: {},
+        errors: {}
+      }
+    case drivers.RETRIEVE_DRIVERS_FAILURE:
+      return {
+        drivers: {},
+        errors: {}
+      }
+    case drivers.REGISTER_DRIVERS_SUCCESS:
+      return {
+        message: 'Driver is succesfully registered!'
+      }
+    case drivers.REGISTER_DRIVERS_REQUEST:
+      return {
+        message: '...'
+      }
+    case drivers.REGISTER_DRIVERS_FAILURE:
+      return {
+        message: 'Driver was not registered!',
+        errors: {}
+      }
+    default:
+      return state
+  }
+}
