@@ -9,30 +9,30 @@ export function createApiMiddleware() {
 
   return ({ dispatch, getState }) => {
     const rsaaMiddleware = apiMiddleware({ dispatch, getState })
-
+    
     return (next) => (action) => {
       const nextCheckPostoned = (nextAction) => {
-        console.log("nextAction: " + nextAction)
-        // Run postponed actions after token refresh
+        
         if (nextAction.type === TOKEN_RECEIVED) {
-          console.log( "next: " + next)
-          console.log( "action: " + action)
           next(nextAction);
           postponedRSAAs.forEach((postponed) => {
             rsaaMiddleware(next)(postponed)
           })
           postponedRSAAs = []
         } else {
+
           next(nextAction)
         }
       }
-
+      
       if (isRSAA(action)) {
+  
         const state = getState(),
           token = refreshToken(state)
 
         if (token && isAccessTokenExpired(state)) {
           postponedRSAAs.push(action)
+         
           if (postponedRSAAs.length === 1) {
             return rsaaMiddleware(nextCheckPostoned)(refreshAccessToken(token))
           } else {
@@ -42,6 +42,7 @@ export function createApiMiddleware() {
 
         return rsaaMiddleware(next)(action);
       }
+
       return next(action);
     }
   }

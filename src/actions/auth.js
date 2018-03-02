@@ -24,7 +24,7 @@ export const refreshAccessToken = (token) => ({
   [RSAA]: {
     endpoint: 'http://89.223.28.252:8000/ru/ext_api/v0/api-token-refresh/',
     method: 'POST',
-    body: JSON.stringify({ refresh: token }),
+    body: JSON.stringify({ token: token }),
     headers: { 'Content-Type': 'application/json' },
     types: [
       TOKEN_REQUEST, TOKEN_RECEIVED, TOKEN_FAILURE

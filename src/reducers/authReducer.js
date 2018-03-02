@@ -3,6 +3,8 @@ import * as auth from '../actions/auth'
 const initialState = {
   access: undefined,
   refresh: undefined,
+  exp: undefined,
+  start_ext: undefined,
   errors: {},
 }
 
@@ -12,10 +14,15 @@ export default (state = initialState, action) => {
       return {
         access: {
           token: action.payload.token,
-          isAdmin: action.payload.user.is_admin
+          isAdmin: action.payload.user.is_admin,
+          exp: action.payload.exp,
+          start_exp: (new Date()).getTime()
         },
         refresh: {
           token: action.payload.token,
+          isAdmin: action.payload.user.is_admin,
+          exp: action.payload.exp,
+          start_exp: (new Date()).getTime()
         },
         errors: {}
       }
@@ -24,6 +31,9 @@ export default (state = initialState, action) => {
         ...state,
         access: {
           token: action.payload.token,
+          isAdmin: action.payload.user.is_admin,
+          exp: action.payload.exp,
+          start_exp: (new Date()).getTime()
         }
       }
     case auth.LOGIN_FAILURE:
@@ -31,6 +41,7 @@ export default (state = initialState, action) => {
       return {
         access: undefined,
         refresh: undefined,
+        exp: undefined,
         errors:
           action.payload.response ||
           { 'non_field_errors': action.payload.statusText },
@@ -47,22 +58,19 @@ export function accessToken(state) {
 }
 
 export function refreshToken(state) {
-  if (state.refresh) {
-    return state.refresh.token
+  if (state.auth.refresh) {
+    return state.auth.refresh.token
   }
 }
 
 export function isAccessTokenExpired(state) {
-  if (state.access && state.access.exp) {
-    return 1000 * state.access.exp - (new Date()).getTime() < 5000
+  
+  if (state.auth.access && state.auth.access.exp) {
+    return state.auth.access.start_exp - (new Date()).getTime() < parseInt(state.auth.access.exp, 10) * 1000
   }
   return true
 }
 export function isRefreshTokenExpired(state) {
-  // if (state.refresh && state.refresh.exp) {
-  //   return 1000 * state.refresh.exp - (new Date()).getTime() < 5000
-  // }
-  
   if (state.access && state.access.token !== "") {
     return { isAdmin: state.access.isAdmin, isAuthenticated: true }
   }

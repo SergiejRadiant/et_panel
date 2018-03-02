@@ -9,6 +9,7 @@ import { login } from '../actions/auth'
 
 
 const Login = (props) => {
+
 	if (props.auth.isAuthenticated && props.auth.isAdmin) {
 		return (
 			<Redirect to='/admin' />
